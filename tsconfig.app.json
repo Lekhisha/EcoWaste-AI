@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    /* Build Info */
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+    /* ECMAScript Target & Libraries */
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    /* Module System */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "moduleDetection": "force",
+    "resolveJsonModule": true,
+
+    /* React / JSX */
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+
+    /* Type Checking */
+    "strict": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "noEmit": true,
+
+    /* Linting / Code Hygiene */
+    "noUnusedLocals": false,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+
+  /* Include source files */
+  "include": ["src"]
+}
