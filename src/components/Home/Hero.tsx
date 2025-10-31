@@ -13,7 +13,7 @@ const bgstyle2 = {
 const Hero = () => {
   return (
     <>
-      <div className="relative z-[-1] py-14  bg-linear-to-r from-amber-200 to-green-500">
+      <div className="relative z-[-1] py-20  bg-linear-to-r from-amber-200 to-green-500">
         <div className="container py-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 place-items-center gap-4">
             <div className="px-5 order-2 sm:order-1">
