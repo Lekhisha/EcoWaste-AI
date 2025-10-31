@@ -42,7 +42,12 @@ interface RecyclabilityStatusProps {
 }
 
 // --- Configuration ---
-// CRITICAL: Replace with your actual Hugging Face Access Token.
+
+/**
+ * The token is intentionally left blank here for security in the public editor.
+ * TO RUN THIS APP HERE: Replace "" with your actual Hugging Face API token.
+ * TO RUN THIS APP LOCALLY: Ensure VITE_HF_TOKEN is set in your .env file, and your local build system will inject it.
+ */
 const HF_API_TOKEN = import.meta.env.VITE_HF_TOKEN; 
 
 // Using the general, fast model with advanced local scoring logic.
@@ -123,7 +128,7 @@ const retryFetch = async (url: string, options: RequestInit, retries: number = 3
     throw new Error('Fetch failed after all retries.'); 
 };
 
-// --- Core Logic: Multi-Label Scoring and Mapping (omitted for brevity) ---
+// --- Core Logic: Multi-Label Scoring and Mapping ---
 const getWasteDetails = (predictions: HFPrediction[]): ClassificationResult => {
     if (!predictions || predictions.length === 0) {
         return { rawLabel: 'N/A', ...WASTE_MAP['UNKNOWN_FALLBACK'] };
@@ -201,7 +206,7 @@ const Part2: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const [isCameraMode, setIsCameraMode] = useState<boolean>(false);
-    // NEW: State for history, limited to 5 items
+    // State for history, limited to 5 items
     const [history, setHistory] = useState<HistoryItem[]>([]);
     
     // Camera States for multi-camera support
@@ -362,8 +367,8 @@ const Part2: React.FC = () => {
 
     const runInference = useCallback(async () => {
         // Token Check
-        if ((HF_API_TOKEN as string) === "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" || HF_API_TOKEN.startsWith("hf_A")) {
-             setError('Hugging Face API Token not set. Please update the `HF_API_TOKEN` variable with your actual token.');
+        if (HF_API_TOKEN === "") { 
+             setError('Hugging Face API Token is missing. If running locally, ensure VITE_HF_TOKEN is set in your .env file. If running here, you must manually update the HF_API_TOKEN constant in the source code.');
              return;
         }
 
@@ -591,7 +596,7 @@ const Part2: React.FC = () => {
                                     <input
                                         type="file"
                                         accept="image/*"
-                                        capture="environment"
+                                        // FIX APPLIED: Removed the 'capture' attribute to default to system file picker
                                         onChange={handleFileChange}
                                         className="hidden"
                                         onClick={(e) => {
@@ -684,52 +689,57 @@ const Part2: React.FC = () => {
                                     </p>
                                 </div>
                                 <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Model Label (Raw AI Guess)</p>
-                                    <p className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Raw Model Label (Confidence Top 1)</p>
+                                    <p className="text-lg font-bold text-gray-800 dark:text-gray-100 italic">
                                         {classification.rawLabel}
                                     </p>
                                 </div>
                             </div>
-
-                            {/* Recyclability Status */}
-                            <RecyclabilityStatus
+                            
+                            {/* Recyclability Status Component */}
+                            <RecyclabilityStatus 
                                 recyclable={classification.recyclable}
                                 special={classification.special}
                                 compostable={classification.compostable}
                                 note={classification.note}
                             />
+
                         </div>
                     )}
+                    
+                    {/* History Section */}
+                    {history.length > 0 && (
+                        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                                    Recent Classifications ({history.length})
+                                </h2>
+                                <button
+                                    onClick={() => setHistory([])}
+                                    className="text-sm font-medium text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition flex items-center"
+                                >
+                                    <Trash2 className="w-4 h-4 mr-1" /> Clear History
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                                {history.map((item, index) => (
+                                    <HistoryCard key={item.timestamp + index} item={item} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                
+                    {/* End of main card */}
                 </div>
-
-                {/* --- NEW: CLASSIFICATION HISTORY SECTION --- */}
-                {history.length > 0 && (
-                    <div className="mt-12">
-                        <div className="flex justify-between items-center mb-6 border-b pb-3 border-gray-200 dark:border-gray-700">
-                            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center">
-                                <Clock className="w-6 h-6 mr-2 text-indigo-500" />
-                                Recent History (Latest {history.length})
-                            </h2>
-                            <button 
-                                onClick={() => setHistory([])}
-                                className="text-sm text-red-500 hover:text-red-700 dark:hover:text-red-300 transition flex items-center font-medium"
-                            >
-                                <Trash2 className="w-4 h-4 mr-1" /> Clear History
-                            </button>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                            {history.map((item, index) => (
-                                <HistoryCard key={item.timestamp + index} item={item} />
-                            ))}
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );
 };
 
 export default Part2;
+
+
+
 
 
 
