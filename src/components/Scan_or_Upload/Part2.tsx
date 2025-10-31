@@ -733,12 +733,6 @@ const Part2: React.FC = () => {
                 
                     {/* End of main card */}
                 </div>
-
-                {/* Footer for context/attribution */}
-                <footer className="text-center mt-10 text-xs text-gray-400 dark:text-gray-600">
-                    <p>Powered by Hugging Face (google/vit-base-patch16-224) and React/Tailwind CSS.</p>
-                    <p className="mt-1">Disclaimer: Classification is AI-generated and should be verified with local municipal guidelines.</p>
-                </footer>
             </div>
         </div>
     );
