@@ -12,7 +12,7 @@ const bgstyle2 = {
 const About = () => {
   return (
     <>
-     <div className="relative py-14 ">
+     <div  className="relative py-14 ">
       <div className="container py-4">
         <div>
           <div className="text-center text-4xl font-bold text-cyan-950">

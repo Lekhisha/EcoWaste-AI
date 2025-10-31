@@ -10,7 +10,7 @@ const bgstyle2 = {
 };
 const Part = () => {
   return (
-    <div className='Relative z-[-1] py-14 bg-gradient-to-r from-amber-200 to-green-500'>
+    <div className='Relative z-[-1] py-14 bg-linear-to-r from-amber-200 to-green-500'>
       <div className='container py-4'>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 place-items-center'>
             <div className='order-2 sm:order-1'>

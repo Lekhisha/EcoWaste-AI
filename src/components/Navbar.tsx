@@ -27,9 +27,8 @@ const Navbar = () => {
   }
   const [isOpen, setisOpen] = useState(false);
   return (
-    <>
-      <div>
-        <div className="shadow-md relative bg-white ">
+    <>   
+        <div className="fixed inset-x-0 top-0 z-50 bg-white/95 backdrop-blur-sm shadow-md ">
           <div className="container flex justify-between py-4 items-center">
             {/*logo*/}
 
@@ -86,7 +85,7 @@ const Navbar = () => {
             </div>
           )}
         </div>
-      </div>
+      
     </>
   );
 };

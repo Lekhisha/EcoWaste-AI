@@ -591,6 +591,7 @@ const Part2: React.FC = () => {
                                     <input
                                         type="file"
                                         accept="image/*"
+                                        capture="environment"
                                         onChange={handleFileChange}
                                         className="hidden"
                                         onClick={(e) => {
@@ -729,3 +730,8 @@ const Part2: React.FC = () => {
 };
 
 export default Part2;
+
+
+
+
+
