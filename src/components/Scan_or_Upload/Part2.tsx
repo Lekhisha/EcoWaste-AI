@@ -217,6 +217,7 @@ const Part2: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const streamRef = useRef<MediaStream | null>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null); // Ref for direct input manipulation
 
     // --- Camera Control Logic ---
     
@@ -303,6 +304,11 @@ const Part2: React.FC = () => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
 
+        // Reset the input value here after selection, which is safer than using onClick
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+
         if (isCameraMode) {
              stopCamera();
              setIsCameraMode(false);
@@ -346,7 +352,7 @@ const Part2: React.FC = () => {
         
         // Reset transformation for future use
         if (cameraFacingMode === 'user') {
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.setTransform(1, 0, 0, 0, 0, 0);
         }
 
         return new Promise((resolve) => {
@@ -594,16 +600,12 @@ const Part2: React.FC = () => {
                                 // File Upload Mode
                                 <label className="cursor-pointer w-full border-4 border-dashed border-green-400 dark:border-green-600 p-6 rounded-xl hover:border-green-700 transition duration-300 relative bg-indigo-50 dark:bg-gray-700 h-full flex flex-col justify-center items-center">
                                     <input
+                                        ref={fileInputRef} // Added ref here
                                         type="file"
                                         accept="image/*"
-                                        // FIX APPLIED: Removed the 'capture' attribute to default to system file picker
+                                        // FIX APPLIED: Removed the 'capture' attribute AND the interfering 'onClick' handler.
                                         onChange={handleFileChange}
                                         className="hidden"
-                                        onClick={(e) => {
-                                            // Reset file input value when clicked to allow uploading the same file again
-                                            const target = e.target as HTMLInputElement;
-                                            target.value = '';
-                                        }}
                                     />
                                     <Upload className="w-10 h-10 text-green-500 mb-3" />
                                     <p className="font-semibold text-green-600 dark:text-green-300 text-center">
@@ -731,6 +733,12 @@ const Part2: React.FC = () => {
                 
                     {/* End of main card */}
                 </div>
+
+                {/* Footer for context/attribution */}
+                <footer className="text-center mt-10 text-xs text-gray-400 dark:text-gray-600">
+                    <p>Powered by Hugging Face (google/vit-base-patch16-224) and React/Tailwind CSS.</p>
+                    <p className="mt-1">Disclaimer: Classification is AI-generated and should be verified with local municipal guidelines.</p>
+                </footer>
             </div>
         </div>
     );
